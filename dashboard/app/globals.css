@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 8 10 14;
+  --surface: 17 21 28;
+  --surface2: 26 32 41;
+  --border: 40 47 58;
+  --text: 230 237 243;
+  --muted: 139 148 158;
+  /* Low-opacity overlays used for hairline dividers / subtle fills on top of
+     glass surfaces. These are theme-aware (unlike raw white/black-alpha
+     Tailwind utilities) so panels stay high-contrast in light mode instead
+     of a white-on-white haze. */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.14);
+  --overlay-soft: rgba(255, 255, 255, 0.025);
+  --overlay-med: rgba(255, 255, 255, 0.045);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+}
+
+html[data-theme="light"] {
+  --bg: 246 247 250;
+  --surface: 255 255 255;
+  --surface2: 242 244 248;
+  --border: 224 228 235;
+  --text: 20 24 31;
+  --muted: 100 109 122;
+  --hairline: rgba(15, 23, 42, 0.1);
+  --hairline-strong: rgba(15, 23, 42, 0.18);
+  --overlay-soft: rgba(15, 23, 42, 0.035);
+  --overlay-med: rgba(15, 23, 42, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+/* Every themed surface fades smoothly instead of snapping when the toggle
+   flips data-theme. */
+body,
+.glass,
+.trail-track,
+input,
+button,
+table,
+tr,
+td,
+th {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+::selection {
+  background: rgba(34, 232, 255, 0.25);
+}
+
+/* Thin, unobtrusive scrollbars used across panels */
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 999px;
+}
+
+/* Custom "component" classes live in Tailwind's components layer (not as
+   bare global CSS) specifically so that any Tailwind utility class placed
+   on the same element — e.g. border-blue-500/20 next to .glass — always
+   wins the cascade. Bare/unlayered CSS beats the utilities layer
+   regardless of source order, which would otherwise silently swallow
+   every per-card border-color override added on top of .glass. */
+@layer components {
+  /* ── Glassmorphism surfaces ─────────────────────────────── */
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  }
+  html[data-theme="light"] .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.5));
+    border: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  /* ── Agent node connector trail ─────────────────────────── */
+  .trail-track {
+    position: relative;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--hairline);
+    overflow: hidden;
+  }
+  .trail-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #22e8ff, #b06bff);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .trail-fill.done {
+    width: 100%;
+  }
+  .trail-fill.active {
+    width: 60%;
+  }
+  .trail-comet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+    animation: comet 1.4s ease-in-out infinite;
+  }
+
+  /* ── Cluster terminal text colors ───────────────────────── */
+  .ct-header {
+    color: rgb(var(--text));
+    font-weight: 700;
+  }
+  .ct-running {
+    color: #7ee787;
+  }
+  .ct-notready {
+    color: #d29922;
+  }
+  .ct-error {
+    color: #f85149;
+  }
+
+  /* ── Domain-colored agent glow ──────────────────────────────
+     One generic keyframe driven by a --glow-rgb custom property (set
+     inline per agent, e.g. "34 232 255") instead of one hardcoded
+     @keyframes per color — scales to any number of domain colors without
+     bloating the Tailwind config. */
+  @keyframes pulse-glow-dynamic {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 0 rgb(var(--glow-rgb) / 45%),
+        0 0 18px 2px rgb(var(--glow-rgb) / 25%);
+    }
+    50% {
+      box-shadow:
+        0 0 0 8px rgb(var(--glow-rgb) / 0%),
+        0 0 28px 6px rgb(var(--glow-rgb) / 40%);
+    }
+  }
+  .animate-glow-dynamic {
+    animation: pulse-glow-dynamic 1.8s ease-in-out infinite;
+  }
+}

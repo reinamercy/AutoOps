@@ -1,0 +1,48 @@
+{
+    "name": "autoops-ai",
+    "version": "1.0.0",
+    "description": "Autonomous Multi-Agent DevOps AI System for Intelligent Incident Detection and Resolution",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "dev": "tsx watch src/index.ts",
+        "dev:no-watch": "tsx src/index.ts",
+        "simulate": "tsx src/simulator/log-producer.ts",
+        "simulate:all": "tsx simulation/run-simulation.ts",
+        "simulate:high-risk": "tsx simulation/high-risk-test.ts",
+        "simulate:blocked": "tsx simulation/blocked-command-test.ts",
+        "db:init": "tsx src/services/database.ts --init",
+        "lint": "eslint src/",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "@fastify/cors": "^9.0.1",
+        "@fastify/static": "^7.0.4",
+        "@fastify/websocket": "^10.0.1",
+        "@kubernetes/client-node": "^1.4.0",
+        "chromadb": "^1.7.3",
+        "chromadb-default-embed": "^2.14.0",
+        "dotenv": "^16.4.5",
+        "fastify": "^4.26.2",
+        "groq-sdk": "^0.5.0",
+        "ioredis": "^5.10.1",
+        "kafkajs": "^2.2.4",
+        "pg": "^8.11.3",
+        "pino": "^8.19.0",
+        "pino-pretty": "^11.0.0",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "@types/ioredis": "^5.0.0",
+        "@types/node": "^20.11.5",
+        "@types/pg": "^8.11.0",
+        "@types/uuid": "^9.0.7",
+        "@typescript-eslint/eslint-plugin": "^8.58.0",
+        "@typescript-eslint/parser": "^8.58.0",
+        "eslint": "^8.57.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.3",
+        "vitest": "^1.2.0"
+    }
+}
