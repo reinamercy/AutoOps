@@ -194,6 +194,35 @@ npm run simulate
 
 ---
 
+## 📑 Paper Reproducibility
+
+The manuscript source is in [paper/](paper/) (`paper.tex`, compiled `paper.pdf`). Every number it reports comes from the **final** result files below, all produced with `openai/gpt-oss-120b` on Groq. No API call is needed to reproduce the tables and statistics from them:
+
+```bash
+bash scripts/finalize-analysis.sh 2>&1 | tee final-analysis.txt
+```
+
+This one command checks completeness, regenerates the random control, and recomputes rates, Wilson intervals, McNemar tests, the Monte Carlo null, latency medians/IQR/bootstrap CI, the risk-score decomposition and per-class paired McNemar. It also rewrites `paper/figures/risk_ablation_data.tex`, the data behind Fig. 2.
+
+| Paper element | Result file(s) in `scripts/` | Analysis script |
+|---|---|---|
+| Experiment 1 (held-out classes), Table II | `eval-heldout-full-gptoss120b.json`, `eval-heldout-baseline-gptoss120b.json` | `analyze-results.ts`, `montecarlo-null.ts` |
+| Random control | `eval-heldout-random-gptoss120b.json` | `random-planner-arm.ts` (seed 42) |
+| Risk-gate routing, term ablation, Fig. 2 | held-out files above | `risk-decomposition.ts` |
+| Experiment 2 (covered classes), Table III | `eval-covered-full-gptoss120b.json`, `eval-covered-baseline-gptoss120b.json` | `analyze-results.ts`, `paired-class-mcnemar.ts` |
+
+- **Rubric:** [src/evaluation/plan-scoring.ts](src/evaluation/plan-scoring.ts), version `strict-1`.
+- **Frozen work order:** [src/evaluation/work-order.ts](src/evaluation/work-order.ts). Final runs used `WORK_ORDER_SEED=1337` with `PAIRED=true` and `INTERLEAVE=true`. Held-out runs also used `COLD_START=true`.
+- **Harness:** [scripts/eval-harness.ts](scripts/eval-harness.ts). The usage is in its header. The server ran with `EXECUTION_MODE=simulate` and real Postgres, Redis, ChromaDB and Kafka (`docker-compose up -d`). Set `GROQ_MODEL_PLANNING=openai/gpt-oss-120b` in `.env`; the code default is the retired Llama model.
+
+**Superseded runs.** Ten older result files (`eval-results-*.json`, `eval-heldout-{full,baseline}.json`, `eval-covered-{full,baseline}.json`, `eval-paired-heldout-*.json`, `eval-random-matched.json`, `eval-ablation-rag-on.json`) come from the retired `llama-3.3-70b-versatile` model or earlier harness versions. Each is marked `meta.superseded`, and [src/evaluation/load-results.ts](src/evaluation/load-results.ts) refuses to load it into an analysis. They are kept only as a record.
+
+**Not run.** The retrieval (RAG) ablation has **not** been run on the final model. `eval-ablation-rag-on.json` is a superseded Llama-era pilot in which retrieval engaged on only the first 5 of 40 incidents, for reasons not yet diagnosed. No retrieval result is claimed in the paper. Also not done: SRE/expert rating of the rubric, a fault-injection executor, and any production data.
+
+**Known metadata caveat.** `meta.autoApprovedByHarness` counts approvals in the harness process that wrote the file last. The final runs were paused and resumed across several days, so that value covers only the last segment. The per-incident records are authoritative: all 93 gated held-out incidents (`approve`/`block`) have `outcome: "resolved"`, which requires an approval.
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

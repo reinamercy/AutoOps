@@ -166,6 +166,27 @@ export async function storeIncident(
     await storeIncidentFallback(incidentId, description, metadata);
 }
 
+/**
+ * Evaluation support (task.md T8). The generalisation experiment measures how
+ * the system handles an incident class it has NEVER seen. Because the vector
+ * store accumulates across runs within an arm, incident N can be served a fix
+ * learned from incidents 1..N-1 — including, observed in practice, a
+ * cross-class false-positive match above the 0.82 threshold. Clearing the store
+ * between incidents restores the cold-start condition the claim depends on.
+ *
+ * Not reachable from the production pipeline — only the /api/debug route.
+ */
+export async function clearVectorStore(): Promise<number> {
+    const cleared = store.length;
+    store.length = 0;
+    if (usingRealChroma && collection) {
+        const existing = await collection.get();
+        if (existing.ids.length) await collection.delete({ ids: existing.ids });
+        return existing.ids.length;
+    }
+    return cleared;
+}
+
 export function getVectorStoreSnapshot() {
     if (usingRealChroma && collection) {
         return collection.get().then((res) =>

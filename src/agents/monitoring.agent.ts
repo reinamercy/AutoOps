@@ -44,6 +44,20 @@ function patternScore(events: RawEvent[]): number {
         { type: "disk_full", field: "diskUsage", minValue: 95, weight: 0.9 },
         { type: "connection_pool_exhaustion", field: "poolUsage", minValue: 90, weight: 0.85 },
         { type: "service_down", field: "status", value: "down", weight: 0.95 },
+
+        // Held-out incident classes (see log-producer.ts HELD_OUT_SCENARIOS).
+        // Detection coverage is deliberately NOT what the generalisation
+        // experiment holds out — remediation coverage is. A team routinely
+        // monitors an incident class it has no runbook for, and without a
+        // signature here the ensemble scores ~0.57 (0.3·S + 0.4·0 + 0.3·R),
+        // never crosses tau = 0.7, and no incident is raised at all — leaving
+        // nothing to compare plans on. These weights apply identically to both
+        // arms of the comparison, so they cannot bias it.
+        { type: "cert_expiry", field: "tlsHandshakeFailures", minValue: 20, weight: 0.9 },
+        { type: "dns_failure", field: "nxdomainCount", minValue: 20, weight: 0.9 },
+        { type: "config_drift", field: "driftDetectedFields", minValue: 1, weight: 0.85 },
+        { type: "cpu_throttling", field: "throttlePercent", minValue: 50, weight: 0.85 },
+        { type: "db_deadlock", field: "deadlockCount", minValue: 3, weight: 0.9 },
     ];
 
     for (const event of events) {

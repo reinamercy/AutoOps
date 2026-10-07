@@ -13,6 +13,8 @@ export interface CacheClient {
     get(key: string): Promise<string | null>;
     set(key: string, value: string, exMode?: string, ttlSec?: number): Promise<void>;
     snapshot(): Promise<Array<{ key: string; ttlSeconds: number; preview: string }>>;
+    /** Evaluation support (task.md T8) — clear cached fixes for a cold start. */
+    clear(): Promise<number>;
 }
 
 const CACHE_TTL_SEC = 30 * 60; // 30 minutes — default when no ttl given
@@ -35,6 +37,12 @@ class InProcessCache implements CacheClient {
     async set(key: string, value: string, _exMode?: string, ttlSec?: number): Promise<void> {
         const expiresAt = Date.now() + (ttlSec ?? CACHE_TTL_SEC) * 1000;
         this.store.set(key, { value, expiresAt });
+    }
+
+    async clear(): Promise<number> {
+        const n = this.store.size;
+        this.store.clear();
+        return n;
     }
 
     async snapshot(): Promise<Array<{ key: string; ttlSeconds: number; preview: string }>> {
@@ -60,6 +68,12 @@ class RealRedisCache implements CacheClient {
 
     async set(key: string, value: string, _exMode?: string, ttlSec?: number): Promise<void> {
         await this.client.set(key, value, "EX", ttlSec ?? CACHE_TTL_SEC);
+    }
+
+    async clear(): Promise<number> {
+        const keys = await this.client.keys("fix:*");
+        if (keys.length) await this.client.del(...keys);
+        return keys.length;
     }
 
     async snapshot(): Promise<Array<{ key: string; ttlSeconds: number; preview: string }>> {
@@ -125,4 +139,5 @@ export const redis: CacheClient = {
     get: (key) => activeCache.get(key),
     set: (key, value, exMode, ttlSec) => activeCache.set(key, value, exMode, ttlSec),
     snapshot: () => activeCache.snapshot(),
+    clear: () => activeCache.clear(),
 };

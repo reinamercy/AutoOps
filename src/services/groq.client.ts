@@ -23,6 +23,43 @@ let circuitOpen = false;
 let circuitOpenUntil = 0;
 let consecutiveFailures = 0;
 
+// ── Last-call metadata (evaluation harness reads this via a debug endpoint
+// to record the provider-returned model id and real token usage per call —
+// queryLLM's own return type predates this and is left alone to avoid
+// touching every call site). ──
+export interface GroqCallMeta {
+    requestedModel: string;
+    providerModel: string | null;
+    promptTokens: number | null;
+    completionTokens: number | null;
+    totalTokens: number | null;
+    reasoningTokens: number | null;
+    at: string;
+}
+let lastCallMeta: GroqCallMeta | null = null;
+export function getLastGroqCallMeta(): GroqCallMeta | null {
+    return lastCallMeta;
+}
+
+// Sticky until the next call attempt starts, so a debug endpoint hit right
+// after a fallback can tell "quota exhausted" apart from any other failure.
+let lastCallWasQuotaExhaustion = false;
+export function wasLastGroqCallQuotaExhaustion(): boolean {
+    return lastCallWasQuotaExhaustion;
+}
+
+/** True when Groq's 429 body names a per-day (not per-minute) limit — retrying won't help for hours. */
+function isDailyQuotaExhaustion(message: string): boolean {
+    return /\b(TPD|RPD)\b|per day|tokens per day|requests per day/i.test(message || "");
+}
+
+export class GroqQuotaExhaustedError extends GroqUnavailableError {
+    constructor(message: string, cause: Error) {
+        super(message, cause);
+        this.name = "GroqQuotaExhaustedError";
+    }
+}
+
 function checkCircuit(): void {
     if (!circuitOpen) return;
     if (Date.now() >= circuitOpenUntil) {
@@ -173,10 +210,18 @@ export class GroqClient {
         // Fail fast if circuit is open
         checkCircuit();
 
+        // Cleared per call (not per attempt): if every attempt in THIS call
+        // fails, lastCallMeta must read as "no usage from this call", not
+        // silently carry over token counts from a previous incident's
+        // successful call — that would misattribute usage to an incident
+        // that never got billed for it.
+        lastCallMeta = null;
+
         const delays = [1000, 2000, 4000];
 
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             try {
+                lastCallWasQuotaExhaustion = false;
                 const completion = await this.client.chat.completions.create({
                     model,
                     temperature: config.groq.temperature,
@@ -186,8 +231,20 @@ export class GroqClient {
                 });
 
                 const content = completion.choices[0]?.message?.content || "{}";
-                const tokensUsed = completion.usage?.total_tokens || 0;
-                log.info({ model, tokensUsed, attempt }, "Groq response received");
+                const usage = completion.usage as
+                    | { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number;
+                        completion_tokens_details?: { reasoning_tokens?: number } }
+                    | undefined;
+                lastCallMeta = {
+                    requestedModel: model,
+                    providerModel: completion.model || null,
+                    promptTokens: usage?.prompt_tokens ?? null,
+                    completionTokens: usage?.completion_tokens ?? null,
+                    totalTokens: usage?.total_tokens ?? null,
+                    reasoningTokens: usage?.completion_tokens_details?.reasoning_tokens ?? null,
+                    at: new Date().toISOString(),
+                };
+                log.info({ model, providerModel: completion.model, tokensUsed: usage?.total_tokens, attempt }, "Groq response received");
                 recordSuccess();
                 return content;
             } catch (err: unknown) {
@@ -199,12 +256,35 @@ export class GroqClient {
                 }
 
                 const statusCode = error.status || error.statusCode || 0;
+                const bodyMessage =
+                    (error as any).error?.error?.message || (error as any).error?.message || error.message || "";
 
-                // Rate limit — retry with backoff
+                // Daily quota exhaustion won't clear within a few seconds of backoff —
+                // surface it distinctly so the harness can pause/checkpoint instead of
+                // burning retries and recording a false "fallback" plan.
+                if (statusCode === 429 && isDailyQuotaExhaustion(bodyMessage)) {
+                    lastCallWasQuotaExhaustion = true;
+                    throw new GroqQuotaExhaustedError(`Groq daily quota exhausted: ${bodyMessage}`, error);
+                }
+
+                // Rate limit (per-minute) — retry with backoff
                 if (statusCode === 429 && attempt < maxAttempts - 1) {
                     const delay = delays[attempt] || 4000;
                     log.warn({ attempt, delay }, "Groq rate limited (429), backing off");
                     await this.sleep(delay);
+                    continue;
+                }
+
+                // Groq's own server-side JSON-schema validator rejected a malformed
+                // generation (400 json_validate_failed) — discovered while migrating
+                // to gpt-oss-120b, a reasoning model more prone to this than
+                // llama-3.3-70b-versatile was. This is a sampling glitch, not a
+                // structural failure of the prompt, so it's worth one immediate
+                // retry rather than converting straight to a recorded "fallback"
+                // and inflating the fallback rate with something a regenerate fixes.
+                if (statusCode === 400 && /json_validate_failed/i.test(bodyMessage) && attempt < maxAttempts - 1) {
+                    log.warn({ attempt }, "Groq rejected malformed JSON (400 json_validate_failed), retrying");
+                    await this.sleep(500);
                     continue;
                 }
 
@@ -302,10 +382,11 @@ export async function queryLLM(
     try {
         const content = await client.complete(userPrompt, systemPrompt, GROQ_MODEL_PLANNING);
         const latencyMs = Date.now() - start;
+        const meta = getLastGroqCallMeta();
         return {
             content,
-            model: GROQ_MODEL_PLANNING,
-            tokensUsed: 0, // SDK doesn't expose tokens through complete()
+            model: meta?.providerModel || GROQ_MODEL_PLANNING,
+            tokensUsed: meta?.totalTokens ?? 0,
             latencyMs,
         };
     } catch (err: unknown) {

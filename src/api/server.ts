@@ -18,7 +18,8 @@ import {
 } from "../orchestrator/workflow";
 import { createIncidentState } from "../orchestrator/state";
 import { generateEvents } from "../simulator/log-producer";
-import { getIncident, listIncidents, getMetrics, isRealDatabase } from "../services/database";
+import { getIncident, listIncidents, getMetrics, isRealDatabase, resetAllPersistentState } from "../services/database";
+import { getLastGroqCallMeta, wasLastGroqCallQuotaExhaustion } from "../services/groq.client";
 import { RawEvent } from "../orchestrator/state";
 import { registerApprovalRoutes } from "./approvals.router";
 import {
@@ -29,7 +30,8 @@ import {
 } from "../services/broadcast";
 import { publishEvents, bus, isRealKafka } from "../services/kafka.service";
 import { isK8sAvailable } from "../services/k8s.client";
-import { getVectorStoreSnapshot, isRealChroma } from "../services/chroma.client";
+import { getVectorStoreSnapshot, isRealChroma, clearVectorStore, storeIncident } from "../services/chroma.client";
+import { RETRIEVAL_SEED_CORPUS } from "../evaluation/retrieval-corpus";
 import { redis, isRealRedis } from "../services/redis.client";
 
 const log = createChildLogger("API");
@@ -185,6 +187,23 @@ export async function createServer() {
                         steps: state.plan.steps.length,
                         riskLevel: state.plan.riskLevel,
                         source: state.planSource,
+                        // How many past incidents retrieval supplied. 0 means
+                        // the RAG step contributed nothing (reviewer R1).
+                        ragContextCount: state.plan.ragContext?.length ?? 0,
+                        // Full step list so the evaluation harness can score plan
+                        // content, not just count it (scripts/plan-scoring.ts).
+                        planSteps: state.plan.steps.map((s) => ({
+                            action: s.action,
+                            description: s.description,
+                            parameters: s.parameters,
+                        })),
+                    } : null,
+                    risk: state.riskAssessment ? {
+                        score: state.riskAssessment.score,
+                        tier: state.riskAssessment.tier,
+                    } : null,
+                    decision: state.decisionResult ? {
+                        action: state.decisionResult.action,
                     } : null,
                     priority: state.priority,
                     executionStatus: state.executionStatus,
@@ -246,6 +265,51 @@ export async function createServer() {
     }));
 
     // ── Debug: Inspect in-process store contents ─────────
+    // ── Evaluation support (task.md T8) ───────────────────
+    // Clears the learned-fix layers so the next incident is a genuine cold
+    // start. The generalisation experiment claims the system handles incident
+    // classes it has never seen; without this, incident N can be served a fix
+    // learned from incidents 1..N-1, which silently turns a generalisation
+    // measurement into a memoisation measurement.
+    app.post("/api/debug/reset-memory", async () => {
+        const vectorsCleared = await clearVectorStore();
+        const cacheCleared = await redis.clear();
+        log.warn({ vectorsCleared, cacheCleared }, "Memory layers reset (evaluation)");
+        return { ok: true, vectorsCleared, cacheCleared };
+    });
+
+    // Seed the vector store with resolved incidents from the COVERED classes
+    // only (reviewer objection R1). Lets the retrieval ablation compare a
+    // realistically warm store against an empty one, with no held-out-class
+    // content that could leak the answer.
+    // Full reset between experiments/arms — clears vectors + Redis (as
+    // reset-memory does) AND truncates the Postgres-backed tables, so a fix
+    // generated under a since-retired model cannot survive into a run meant
+    // to be clean of it. Model-migration guard for the ICAAIC rerun.
+    app.post("/api/debug/reset-all", async () => {
+        const vectorsCleared = await clearVectorStore();
+        const cacheCleared = await redis.clear();
+        const db = await resetAllPersistentState();
+        log.warn({ vectorsCleared, cacheCleared, db }, "Full persistent state reset (evaluation)");
+        return { ok: true, vectorsCleared, cacheCleared, database: db };
+    });
+
+    // The provider-returned model id + real token usage for the most recent
+    // Groq call, and whether it failed on a daily (not per-minute) quota —
+    // the harness reads this right after each incident to attach ground-truth
+    // provenance to the result and to detect exhaustion instead of guessing.
+    app.get("/api/debug/last-groq-call", async () => {
+        return { meta: getLastGroqCallMeta(), quotaExhausted: wasLastGroqCallQuotaExhaustion() };
+    });
+
+    app.post("/api/debug/seed-memory", async () => {
+        for (const inc of RETRIEVAL_SEED_CORPUS) {
+            await storeIncident(inc.id, inc.description, inc.metadata);
+        }
+        log.warn({ seeded: RETRIEVAL_SEED_CORPUS.length }, "Vector store seeded (evaluation)");
+        return { ok: true, seeded: RETRIEVAL_SEED_CORPUS.length };
+    });
+
     app.get("/api/debug/stores", async () => {
         const vectors = await getVectorStoreSnapshot();
         const cache   = await redis.snapshot();
@@ -290,6 +354,16 @@ export async function createServer() {
                     ? "Kubeconfig found — restart_service/scale_deployment/update_resource_limits/verify_health run against a real cluster in shadow/live mode"
                     : "No kubeconfig found — execution always falls back to simulation regardless of EXECUTION_MODE",
                 executionMode: config.agents.executionMode,
+            },
+            // Evaluation-arm configuration. The harness reads this to VERIFY
+            // which arm the server is actually running before recording a
+            // single result — an arm mislabelled by a stale env var would
+            // silently invalidate the whole comparison.
+            evaluation: {
+                baselineMode: process.env.BASELINE_MODE === "true",
+                arm: process.env.BASELINE_MODE === "true" ? "baseline" : "full",
+                simFailureRate: process.env.SIM_FAILURE_RATE || "0.05",
+                simFailureSeed: process.env.SIM_FAILURE_SEED || null,
             },
             clusterWatch: {
                 active: config.agents.executionMode !== "simulate",

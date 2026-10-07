@@ -1,0 +1,6385 @@
+{
+  "meta": {
+    "arm": "baseline",
+    "scenarioSet": "held_out",
+    "runsPerScenario": 20,
+    "scenarios": [
+      "cert_expiry",
+      "dns_failure",
+      "config_drift",
+      "cpu_throttling",
+      "db_deadlock"
+    ],
+    "paired": true,
+    "interleaved": true,
+    "workOrderSeed": 1337,
+    "autoApprovedByHarness": 0,
+    "coldStart": true,
+    "seedRetrieval": false,
+    "latencyExcludesHumanDecisionTime": true,
+    "requireRealBackends": true,
+    "generatedAt": "2026-09-23T20:18:04.716Z"
+  },
+  "results": [
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 5,
+      "eventSeed": 4055872901,
+      "incidentId": "inc-bdb099ea",
+      "wallClockMs": 3748,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 6,
+      "eventSeed": 515084690,
+      "incidentId": "inc-5a46099f",
+      "wallClockMs": 3379,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 13,
+      "eventSeed": 1679204774,
+      "incidentId": "inc-7f1e51f4",
+      "wallClockMs": 3297,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 3,
+      "eventSeed": 464751833,
+      "incidentId": "inc-a20f3e0c",
+      "wallClockMs": 3456,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 10,
+      "eventSeed": 2532550229,
+      "incidentId": "inc-434ff632",
+      "wallClockMs": 3414,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 6,
+      "eventSeed": 2093742404,
+      "incidentId": "inc-d40f1477",
+      "wallClockMs": 3369,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 11,
+      "eventSeed": 1287686552,
+      "incidentId": "inc-c264bfe6",
+      "wallClockMs": 3367,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 12,
+      "eventSeed": 4137776659,
+      "incidentId": "inc-cf9fcd56",
+      "wallClockMs": 3397,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 16,
+      "eventSeed": 4204887135,
+      "incidentId": "inc-7c9a3485",
+      "wallClockMs": 3304,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 16,
+      "eventSeed": 1318314857,
+      "incidentId": "inc-2b295370",
+      "wallClockMs": 3260,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 0,
+      "eventSeed": 737055506,
+      "incidentId": "inc-b9738556",
+      "wallClockMs": 5348,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 1,
+      "stepsCompleted": 2,
+      "stepsFailed": 1,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 4,
+      "eventSeed": 226509160,
+      "incidentId": "inc-23e581af",
+      "wallClockMs": 3348,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 2,
+      "eventSeed": 3938429568,
+      "incidentId": "inc-ae5ef244",
+      "wallClockMs": 3325,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 18,
+      "eventSeed": 1796648107,
+      "incidentId": "inc-a3492102",
+      "wallClockMs": 6422,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 1,
+      "stepsCompleted": 3,
+      "stepsFailed": 1,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 15,
+      "eventSeed": 1354797028,
+      "incidentId": "inc-a973413b",
+      "wallClockMs": 3319,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 10,
+      "eventSeed": 1662427155,
+      "incidentId": "inc-7199f008",
+      "wallClockMs": 5403,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 1,
+      "stepsCompleted": 2,
+      "stepsFailed": 1,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 3,
+      "eventSeed": 720277887,
+      "incidentId": "inc-04935086",
+      "wallClockMs": 3335,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 6,
+      "eventSeed": 636389792,
+      "incidentId": "inc-d094428a",
+      "wallClockMs": 3281,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 10,
+      "eventSeed": 1351870095,
+      "incidentId": "inc-8fcedc95",
+      "wallClockMs": 3512,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 9,
+      "eventSeed": 1942743833,
+      "incidentId": "inc-6790aefa",
+      "wallClockMs": 3393,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 4,
+      "eventSeed": 4039095282,
+      "incidentId": "inc-916b64af",
+      "wallClockMs": 3392,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 10,
+      "eventSeed": 1304464171,
+      "incidentId": "inc-8b0b1158",
+      "wallClockMs": 3331,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 3,
+      "eventSeed": 343952493,
+      "incidentId": "inc-f0ad92c2",
+      "wallClockMs": 3257,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 17,
+      "eventSeed": 1746315250,
+      "incidentId": "inc-671e08ab",
+      "wallClockMs": 3267,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 17,
+      "eventSeed": 4188109516,
+      "incidentId": "inc-b25dfd6b",
+      "wallClockMs": 3376,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 17,
+      "eventSeed": 1388352266,
+      "incidentId": "inc-c70f2e22",
+      "wallClockMs": 3299,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 15,
+      "eventSeed": 4221664754,
+      "incidentId": "inc-4923a42c",
+      "wallClockMs": 3289,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 2,
+      "eventSeed": 447974214,
+      "incidentId": "inc-495240cc",
+      "wallClockMs": 3298,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 14,
+      "eventSeed": 1284759619,
+      "incidentId": "inc-075e79f5",
+      "wallClockMs": 3284,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 19,
+      "eventSeed": 1779870488,
+      "incidentId": "inc-ecbcdd15",
+      "wallClockMs": 3330,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 5,
+      "eventSeed": 2144075261,
+      "incidentId": "inc-078e5d0d",
+      "wallClockMs": 3322,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 9,
+      "eventSeed": 4122983377,
+      "incidentId": "inc-a03b0887",
+      "wallClockMs": 3313,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 8,
+      "eventSeed": 871276458,
+      "incidentId": "inc-562c0ef9",
+      "wallClockMs": 3385,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 1,
+      "eventSeed": 310397255,
+      "incidentId": "inc-2ef24e1c",
+      "wallClockMs": 3274,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 4,
+      "eventSeed": 669945030,
+      "incidentId": "inc-edbc31be",
+      "wallClockMs": 3294,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 1,
+      "eventSeed": 2076964785,
+      "incidentId": "inc-d918f9ef",
+      "wallClockMs": 3383,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 19,
+      "eventSeed": 2649993562,
+      "incidentId": "inc-ebeb3e64",
+      "wallClockMs": 3386,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 0,
+      "eventSeed": 2060187166,
+      "incidentId": "inc-faf82117",
+      "wallClockMs": 3330,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 8,
+      "eventSeed": 1925966214,
+      "incidentId": "inc-866a15cc",
+      "wallClockMs": 3322,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 7,
+      "eventSeed": 4022317663,
+      "incidentId": "inc-23c11380",
+      "wallClockMs": 3313,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 0,
+      "eventSeed": 3971984806,
+      "incidentId": "inc-95e24019",
+      "wallClockMs": 3319,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 9,
+      "eventSeed": 176176303,
+      "incidentId": "inc-37cb88ee",
+      "wallClockMs": 3321,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 18,
+      "eventSeed": 10585553,
+      "incidentId": "inc-1d687274",
+      "wallClockMs": 3287,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 11,
+      "eventSeed": 2515772610,
+      "incidentId": "inc-63ae179b",
+      "wallClockMs": 3269,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 5,
+      "eventSeed": 498307071,
+      "incidentId": "inc-aa8f9f57",
+      "wallClockMs": 3312,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 5,
+      "eventSeed": 243286779,
+      "incidentId": "inc-77559be5",
+      "wallClockMs": 3279,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 9,
+      "eventSeed": 888054077,
+      "incidentId": "inc-5e5a351a",
+      "wallClockMs": 3266,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 7,
+      "eventSeed": 276842017,
+      "incidentId": "inc-f7fcfbfd",
+      "wallClockMs": 3262,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 5,
+      "eventSeed": 686722649,
+      "incidentId": "inc-6c2ed0dd",
+      "wallClockMs": 3262,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 6,
+      "eventSeed": 4005540044,
+      "incidentId": "inc-26a5e557",
+      "wallClockMs": 3273,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 8,
+      "eventSeed": 548639928,
+      "incidentId": "inc-277c4068",
+      "wallClockMs": 3251,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 4,
+      "eventSeed": 481529452,
+      "incidentId": "inc-73c2eb5e",
+      "wallClockMs": 3301,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 16,
+      "eventSeed": 1405129885,
+      "incidentId": "inc-76cb7ecb",
+      "wallClockMs": 3279,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 3,
+      "eventSeed": 2043409547,
+      "incidentId": "inc-44d9763c",
+      "wallClockMs": 3340,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 15,
+      "eventSeed": 1267982000,
+      "incidentId": "inc-e15086a1",
+      "wallClockMs": 3292,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 1,
+      "eventSeed": 753833125,
+      "incidentId": "inc-8c876060",
+      "wallClockMs": 3282,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 12,
+      "eventSeed": 1695982393,
+      "incidentId": "inc-3392cad4",
+      "wallClockMs": 3275,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 18,
+      "eventSeed": 1170243219,
+      "incidentId": "inc-7492db4b",
+      "wallClockMs": 3307,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 14,
+      "eventSeed": 2465439753,
+      "incidentId": "inc-ec252b9e",
+      "wallClockMs": 3299,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 11,
+      "eventSeed": 1335092476,
+      "incidentId": "inc-9c109924",
+      "wallClockMs": 3251,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 0,
+      "eventSeed": 293619636,
+      "incidentId": "inc-6a74d777",
+      "wallClockMs": 3312,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 18,
+      "eventSeed": 1486091047,
+      "incidentId": "inc-09ef70c1",
+      "wallClockMs": 3271,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 4,
+      "eventSeed": 2127297642,
+      "incidentId": "inc-f92fd691",
+      "wallClockMs": 3271,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 7,
+      "eventSeed": 2110520023,
+      "incidentId": "inc-a529bb31",
+      "wallClockMs": 3324,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 14,
+      "eventSeed": 1371574647,
+      "incidentId": "inc-38f84009",
+      "wallClockMs": 3286,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 2,
+      "eventSeed": 327174874,
+      "incidentId": "inc-8a19d078",
+      "wallClockMs": 3264,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 13,
+      "eventSeed": 1368647714,
+      "incidentId": "inc-8244b88e",
+      "wallClockMs": 3262,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 12,
+      "eventSeed": 1385425333,
+      "incidentId": "inc-7c84e918",
+      "wallClockMs": 3270,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 1,
+      "eventSeed": 3988762425,
+      "incidentId": "inc-5bd162ea",
+      "wallClockMs": 3327,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 12,
+      "eventSeed": 2498994991,
+      "incidentId": "inc-67dd026c",
+      "wallClockMs": 3304,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 3,
+      "eventSeed": 3955207187,
+      "incidentId": "inc-357f1aba",
+      "wallClockMs": 5403,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 1,
+      "stepsCompleted": 2,
+      "stepsFailed": 1,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 8,
+      "eventSeed": 159398684,
+      "incidentId": "inc-61cd9f4e",
+      "wallClockMs": 3262,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 13,
+      "eventSeed": 2482217372,
+      "incidentId": "inc-65f244e5",
+      "wallClockMs": 3319,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 13,
+      "eventSeed": 4120999040,
+      "incidentId": "inc-cae84672",
+      "wallClockMs": 3323,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 14,
+      "eventSeed": 4238442373,
+      "incidentId": "inc-fb00d977",
+      "wallClockMs": 3306,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 11,
+      "eventSeed": 1645649536,
+      "incidentId": "inc-f1c890eb",
+      "wallClockMs": 3277,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 2,
+      "eventSeed": 2026631928,
+      "incidentId": "inc-72deb0fd",
+      "wallClockMs": 3332,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 15,
+      "eventSeed": 1712760012,
+      "incidentId": "inc-76b1ad24",
+      "wallClockMs": 3308,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 8,
+      "eventSeed": 4106205758,
+      "incidentId": "inc-f8afba84",
+      "wallClockMs": 3277,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 15,
+      "eventSeed": 2448662134,
+      "incidentId": "inc-636ce2e5",
+      "wallClockMs": 3298,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 6,
+      "eventSeed": 260064398,
+      "incidentId": "inc-f59bee65",
+      "wallClockMs": 3280,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 12,
+      "eventSeed": 1338019409,
+      "incidentId": "inc-56819a0c",
+      "wallClockMs": 3291,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 17,
+      "eventSeed": 1301537238,
+      "incidentId": "inc-4169de4a",
+      "wallClockMs": 3378,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 7,
+      "eventSeed": 531862309,
+      "incidentId": "inc-3de9f164",
+      "wallClockMs": 6434,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 1,
+      "stepsCompleted": 3,
+      "stepsFailed": 1,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 7,
+      "eventSeed": 653167411,
+      "incidentId": "inc-5ab1612c",
+      "wallClockMs": 3329,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 17,
+      "eventSeed": 2415106896,
+      "incidentId": "inc-fb44f108",
+      "wallClockMs": 3323,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 14,
+      "eventSeed": 1729537631,
+      "incidentId": "inc-0772e42f",
+      "wallClockMs": 3480,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 0,
+      "eventSeed": 414418976,
+      "incidentId": "inc-2ce77cbd",
+      "wallClockMs": 3372,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 16,
+      "eventSeed": 2431884515,
+      "incidentId": "inc-4061356b",
+      "wallClockMs": 3257,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 19,
+      "eventSeed": 4288775230,
+      "incidentId": "inc-c6e56f66",
+      "wallClockMs": 3268,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 13,
+      "eventSeed": 1321241790,
+      "incidentId": "inc-4d7eef6c",
+      "wallClockMs": 3355,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in notification-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "notification-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "notification-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 10,
+      "eventSeed": 4171331897,
+      "incidentId": "inc-f40e68cd",
+      "wallClockMs": 3269,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 11,
+      "eventSeed": 4154554278,
+      "incidentId": "inc-f2ce4070",
+      "wallClockMs": 3298,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 9,
+      "eventSeed": 565417547,
+      "incidentId": "inc-ef142b1d",
+      "wallClockMs": 3325,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "dns_failure",
+      "arm": "baseline",
+      "runIndex": 16,
+      "eventSeed": 1763092869,
+      "incidentId": "inc-53d5b475",
+      "wallClockMs": 3271,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "dns_failure",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "dns_failure",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "config_drift",
+      "arm": "baseline",
+      "runIndex": 1,
+      "eventSeed": 431196595,
+      "incidentId": "inc-dccf22c0",
+      "wallClockMs": 3263,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "config_drift",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in order-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "order-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "order-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "config_drift",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, rollback_deployment)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 2,
+      "eventSeed": 703500268,
+      "incidentId": "inc-b46b94ed",
+      "wallClockMs": 3315,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in payment-api",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "payment-api"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "payment-api",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cpu_throttling",
+      "arm": "baseline",
+      "runIndex": 19,
+      "eventSeed": 1469313428,
+      "incidentId": "inc-6fc7095e",
+      "wallClockMs": 3283,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.88,
+      "issueType": "cpu_throttling",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in user-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "user-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "user-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cpu_throttling",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 0.5,
+        "irrelevantActions": [
+          "restart_service"
+        ],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.275,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: update_resource_limits)",
+          "irrelevant actions: restart_service"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "db_deadlock",
+      "arm": "baseline",
+      "runIndex": 19,
+      "eventSeed": 1153465600,
+      "incidentId": "inc-5d430418",
+      "wallClockMs": 3306,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "db_deadlock",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in auth-service",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "auth-service"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "auth-service",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "db_deadlock",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: flush_connection_pool)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    },
+    {
+      "scenario": "cert_expiry",
+      "arm": "baseline",
+      "runIndex": 18,
+      "eventSeed": 2666771181,
+      "incidentId": "inc-ed916af3",
+      "wallClockMs": 3310,
+      "outcome": "resolved",
+      "anomalyDetected": true,
+      "anomalyScore": 0.9,
+      "issueType": "cert_expiry",
+      "rootCauseCategory": "unknown",
+      "planSource": "fallback",
+      "ragContextCount": 0,
+      "planTitle": "Fallback: Remediate unknown in api-gateway",
+      "planSteps": [
+        {
+          "action": "restart_service",
+          "description": "Restart the affected service",
+          "parameters": {
+            "service": "api-gateway"
+          }
+        },
+        {
+          "action": "verify_health",
+          "description": "Verify service health",
+          "parameters": {
+            "service": "api-gateway",
+            "endpoint": "/health"
+          }
+        }
+      ],
+      "planScore": {
+        "scenario": "cert_expiry",
+        "correct": false,
+        "correctLenient": false,
+        "addressesRootCause": false,
+        "hasForbiddenAction": false,
+        "precision": 1,
+        "irrelevantActions": [],
+        "hasVerification": true,
+        "stepCountSane": true,
+        "score": 0.4,
+        "actions": [
+          "restart_service",
+          "verify_health"
+        ],
+        "notes": [
+          "no required action present (need one of: apply_config, trigger_pipeline)"
+        ]
+      },
+      "riskScore": 44,
+      "riskTier": "notify",
+      "decisionAction": "execute_notify",
+      "executionStatus": "success",
+      "retryCount": 0,
+      "stepsCompleted": 2,
+      "stepsFailed": 0,
+      "providerModel": null,
+      "promptTokens": null,
+      "completionTokens": null,
+      "totalTokens": null
+    }
+  ]
+}

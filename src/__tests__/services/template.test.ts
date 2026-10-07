@@ -147,4 +147,45 @@ describe("TemplateService", () => {
         expect(commands[0]).toContain("staging");
         expect(commands[2]).toContain("my-app");
     });
+
+    // ── Reachability ────────────────────────────────────────────────
+    // These templates were previously dead code: they matched on an
+    // incidentType ("resource_pressure") the Monitoring agent never emits,
+    // AND on a metric/metricValue pair the Planning agent never populated.
+    // The result was that the template tier of the four-stage planning
+    // chain never fired once across a 102-incident benchmark. Pin the
+    // reachability so the regression can't return silently.
+
+    it("matches a real cpu_spike incident to the high-cpu template", () => {
+        const ctx = makeContext({
+            incidentType: "cpu_spike",
+            errorSignature: "resource_exhaustion",
+            metric: "cpu",
+            metricValue: 90, // detector's own cpu_spike threshold fires at 90
+        });
+        const result = templateService.findTemplate(ctx);
+        expect(result).not.toBeNull();
+        expect(result!.templateId).toBe("tpl-high-cpu-pod");
+    });
+
+    it("matches a real OOM-kill incident to the high-memory template", () => {
+        const ctx = makeContext({
+            incidentType: "pod_crash",
+            errorSignature: "memory_leak OOMKilled",
+            metric: "memory",
+            metricValue: 98.6, // 505Mi of a 512Mi limit
+        });
+        const result = templateService.findTemplate(ctx);
+        expect(result).not.toBeNull();
+        expect(result!.templateId).toBe("tpl-high-memory-pod");
+    });
+
+    it("does not match high-cpu below the detector threshold", () => {
+        const ctx = makeContext({
+            incidentType: "cpu_spike",
+            metric: "cpu",
+            metricValue: 74,
+        });
+        expect(templateService.findTemplate(ctx)).toBeNull();
+    });
 });

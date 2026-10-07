@@ -19,6 +19,30 @@ const commandValidator = new CommandValidatorService();
 // can't express, and stay simulated even in shadow/live mode).
 const K8S_BACKED_ACTIONS = new Set(["restart_service", "scale_deployment", "update_resource_limits", "verify_health"]);
 
+// ── Reproducible simulated failures ───────────────────────────────
+// Every resolution-rate figure the evaluation reports is a function of these
+// draws, so a benchmark run has to be repeatable. Set SIM_FAILURE_SEED to a
+// number for a deterministic sequence (mulberry32); leave it unset and this
+// falls back to Math.random(), preserving the previous behaviour.
+export const SIM_FAILURE_RATE = parseFloat(process.env.SIM_FAILURE_RATE || "0.05");
+
+function mulberry32(seed: number): () => number {
+    let a = seed >>> 0;
+    return function () {
+        a = (a + 0x6d2b79f5) >>> 0;
+        let t = a;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+const seededRng = process.env.SIM_FAILURE_SEED
+    ? mulberry32(parseInt(process.env.SIM_FAILURE_SEED, 10))
+    : null;
+
+const simFailureRng = (): number => (seededRng ? seededRng() : Math.random());
+
 /**
  * Route a step through the real Kubernetes client. shadow=true uses the API's
  * server-side dryRun:"All" — a genuine dry run, not a hardcoded string.
@@ -73,8 +97,10 @@ async function simulateAction(step: PlanStep, incidentId: string, stepNum: numbe
 
     await new Promise((resolve) => setTimeout(resolve, delay));
 
-    // 5% chance of failure to demonstrate retry resilience
-    const shouldFail = Math.random() < 0.05;
+    // 5% chance of failure to demonstrate retry resilience.
+    // Seeded when SIM_FAILURE_SEED is set so a benchmark run is reproducible
+    // (every outcome figure in the paper depends on these draws).
+    const shouldFail = simFailureRng() < SIM_FAILURE_RATE;
     if (shouldFail) {
         const output = `Error: ${step.action} failed — connection timeout after ${step.timeoutSeconds}s`;
         broadcast("execution_step", {

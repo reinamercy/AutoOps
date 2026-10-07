@@ -19,8 +19,19 @@ export async function feedbackAgent(state: IncidentState): Promise<IncidentState
     state.updatedAt = new Date().toISOString();
 
     // Step 1: Evaluate outcome
+    //
+    // The orchestrator already classifies the human-approval paths (rejection,
+    // approval timeout, approval-flow error) as "escalated" before breaking out
+    // of the retry loop. Recomputing unconditionally here used to clobber that:
+    // an incident that timed out at the approval gate has executionStatus
+    // !== "success", no completed steps, and retryCount < maxRetries, so it
+    // fell through to "failed" — which is why every oom_kill incident in the
+    // benchmark reported `failed` despite never having been executed at all.
+    // An upstream escalation is authoritative; only classify here if it wasn't.
     let outcome: IncidentState["outcome"];
-    if (state.executionStatus === "success") {
+    if (state.outcome === "escalated") {
+        outcome = "escalated";
+    } else if (state.executionStatus === "success") {
         outcome = "resolved";
     } else if (state.stepsCompleted.length > 0 && state.stepsFailed.length > 0) {
         outcome = "partial";

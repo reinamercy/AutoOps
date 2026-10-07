@@ -9,7 +9,7 @@
  * 4. Fallback / escalate if Groq unavailable
  */
 import { v4 as uuidv4 } from "uuid";
-import { IncidentState, RemediationPlan, PlanStep } from "../orchestrator/state";
+import { IncidentState, RemediationPlan, PlanStep, RawEvent } from "../orchestrator/state";
 import { queryLLM, GroqUnavailableError } from "../services/groq.client";
 import { querySimilarIncidents } from "../services/chroma.client";
 import { createChildLogger } from "../utils/logger";
@@ -110,6 +110,46 @@ IMPORTANT: Generate a DIFFERENT approach. Do not repeat the same steps.`;
     return prompt;
 }
 
+/** Parse a Kubernetes-style mebibyte quantity ("512Mi", "2Gi") into MiB. */
+function parseMiB(raw: unknown): number | null {
+    if (typeof raw === "number") return raw;
+    if (typeof raw !== "string") return null;
+    const m = raw.match(/^(\d+(?:\.\d+)?)\s*(Mi|Gi|M|G)?$/);
+    if (!m) return null;
+    const value = parseFloat(m[1]);
+    return m[2] === "Gi" || m[2] === "G" ? value * 1024 : value;
+}
+
+/**
+ * Derive the (metric, metricValue) pair the resource-pressure templates match
+ * against. The Monitoring agent classifies incidents by *type* (cpu_spike,
+ * disk_full, ...) but never emits the metric pair, so without this the
+ * template stage of the planning chain is unreachable for every
+ * resource-pressure incident — the chain silently starts at memory instead.
+ */
+export function deriveMetricSignal(rawEvents: RawEvent[]): {
+    metric?: string;
+    metricValue?: number;
+} {
+    for (const e of rawEvents) {
+        const d = (e.data || {}) as Record<string, unknown>;
+
+        if (typeof d.cpuUsage === "number") return { metric: "cpu", metricValue: d.cpuUsage };
+        if (typeof d.diskUsage === "number") return { metric: "disk", metricValue: d.diskUsage };
+        if (typeof d.poolUsage === "number") {
+            return { metric: "connection_pool", metricValue: d.poolUsage };
+        }
+
+        // Memory arrives as K8s quantity strings on OOM-kill events.
+        const used = parseMiB(d.memoryUsage);
+        const limit = parseMiB(d.memoryLimit);
+        if (used !== null && limit !== null && limit > 0) {
+            return { metric: "memory", metricValue: (used / limit) * 100 };
+        }
+    }
+    return {};
+}
+
 // ── Main Agent ────────────────────────────────────
 
 export async function planningAgent(state: IncidentState): Promise<IncidentState> {
@@ -135,6 +175,8 @@ export async function planningAgent(state: IncidentState): Promise<IncidentState
         .join(" ");
     const enrichedSignature = `${state.rootCause.category} ${rawReasons}`.trim();
 
+    const { metric, metricValue } = deriveMetricSignal(state.rawEvents);
+
     const incidentContext: IncidentContext = {
         id: state.incidentId,
         incidentType: state.issue.type,
@@ -144,12 +186,22 @@ export async function planningAgent(state: IncidentState): Promise<IncidentState
         namespace: state.rawEvents[0]?.source?.namespace,
         podName: state.rawEvents[0]?.source?.pod,
         deploymentName: state.issue.affectedService,
+        metric,
+        metricValue,
+        resourceType: state.rawEvents.find((e) => e.data?.resourceType)?.data
+            ?.resourceType as string | undefined,
     };
 
-    // Priority 1: Deterministic templates (most reliable, no LLM needed)
-    // service_down always goes to Groq LLM — no template/memory cache
-    const skipCache = incidentContext.incidentType === "service_down";
-    const templateFix = skipCache ? null : templateService.findTemplate(incidentContext);
+    // Priority 1: Deterministic templates (most reliable, no LLM needed).
+    //
+    // service_down bypasses the *memory* tier only: the justification is
+    // staleness — a cached fix for a service that is now unresponsive may no
+    // longer apply. That argument does not extend to templates, which are
+    // deterministic and pre-validated rather than learned, so they stay in
+    // the chain. (Previously a single `skipCache` flag disabled both, which
+    // left tpl-service-no-endpoints permanently unreachable.)
+    const skipMemoryCache = incidentContext.incidentType === "service_down";
+    const templateFix = templateService.findTemplate(incidentContext);
     if (templateFix) {
         state.plan = {
             planId: `plan-tpl-${uuidv4().slice(0, 8)}`,
@@ -186,7 +238,7 @@ export async function planningAgent(state: IncidentState): Promise<IncidentState
 
     // Priority 2: Vector memory retrieval (reuse proven past fixes)
     try {
-        const memoryResult = skipCache
+        const memoryResult = skipMemoryCache
             ? { fix: null, similarity: 0, source: "none" as const, trustworthy: false }
             : await memoryService.queryMemory(incidentContext);
         if (memoryResult.fix && memoryResult.source !== "none") {
@@ -343,6 +395,18 @@ function generateFallbackPlan(state: IncidentState): IncidentState {
     };
 
     const steps = fallbackSteps[category] || fallbackSteps.default;
+
+    // Label the source here rather than at each call site. planSource is set
+    // optimistically to "llm" before the Groq call, and several failure paths
+    // (request error, unparseable JSON) land here — every one of them used to
+    // leave the plan reported as "llm" while serving hardcoded fallback steps,
+    // silently corrupting the plan-source distribution we report. Setting it by
+    // construction makes that class of mislabelling impossible.
+    // "unavailable" is preserved: it is a strictly more specific diagnosis
+    // (circuit breaker open) that the caller has already established.
+    if (state.planSource !== "unavailable") {
+        state.planSource = "fallback";
+    }
 
     state.plan = {
         planId: `plan-fallback-${uuidv4().slice(0, 8)}`,

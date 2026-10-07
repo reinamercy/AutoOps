@@ -6,6 +6,27 @@
  *
  * Templates are checked FIRST in the planning pipeline, before memory
  * and before Groq LLM.
+ *
+ * ACTION VOCABULARY CONTRACT — do not break this.
+ * Every step that CHANGES cluster state must use an action name the Execution
+ * Agent dispatches on: restart_service, scale_deployment, rolling_restart,
+ * rollback_deployment, update_resource_limits, clear_disk_space,
+ * flush_connection_pool, apply_config, verify_health, trigger_pipeline.
+ *
+ * These steps originally carried free-text labels ("scale up", "rollback",
+ * "restart deployment") alongside their kubectl command. That reads well but
+ * breaks execution: `runK8sAction` switches on `step.action`, so an unrecognised
+ * name falls to `default` and returns success:false — meaning template plans
+ * could not execute against a real cluster at all. The defect stayed invisible
+ * because simulate mode ends with `outputs[step.action] || "✓ … completed"` and
+ * reports success:true for ANY action, so unknown steps were rubber-stamped.
+ * The tier with the highest trust (confidence 0.95, −25 risk discount, capped
+ * at `notify` so it needs the least human oversight) was therefore the tier
+ * producing the least executable plans.
+ *
+ * Read-only diagnostic steps (`kubectl describe/get/top/logs`) keep their
+ * descriptive labels: they mutate nothing, and there is no canonical action for
+ * "inspect". They still hit the executor's default branch — see task.md.
  */
 import { createChildLogger } from "../utils/logger";
 import { FixStep, IncidentContext, TemplateFix } from "./enterprise-types";
@@ -47,7 +68,7 @@ const TEMPLATES: TemplateDefinition[] = [
                 estimatedDurationSec: 10,
             },
             {
-                action: "restart deployment",
+                action: "rolling_restart",
                 command: `kubectl rollout restart deployment/${inc.deploymentName || inc.affectedService} -n ${inc.namespace || "default"}`,
                 description: "Rolling restart the deployment",
                 estimatedDurationSec: 60,
@@ -62,10 +83,18 @@ const TEMPLATES: TemplateDefinition[] = [
     {
         templateId: "tpl-high-memory-pod",
         name: "High Memory Usage Pod Scaling",
+        // Matches the incident types the Monitoring agent actually emits for
+        // memory pressure (pod_crash/oom_killed), plus the generic
+        // resource_pressure label. Previously required resource_pressure
+        // alone, which the detector never produces — the template was
+        // unreachable.
         match: (inc) =>
-            inc.incidentType === "resource_pressure" &&
+            (inc.incidentType === "resource_pressure" ||
+                inc.incidentType === "pod_crash" ||
+                inc.incidentType === "oom_killed") &&
             inc.metric === "memory" &&
-            (inc.metricValue !== undefined && inc.metricValue > 85),
+            inc.metricValue !== undefined &&
+            inc.metricValue > 85,
         buildSteps: (inc) => {
             const currentReplicas = 3; // Default assumption
             return [
@@ -76,7 +105,7 @@ const TEMPLATES: TemplateDefinition[] = [
                     estimatedDurationSec: 10,
                 },
                 {
-                    action: "scale up",
+                    action: "scale_deployment",
                     command: `kubectl scale deployment/${inc.deploymentName || inc.affectedService} --replicas=${currentReplicas + 1} -n ${inc.namespace || "default"}`,
                     description: "Scale up deployment to distribute memory load",
                     estimatedDurationSec: 30,
@@ -92,10 +121,14 @@ const TEMPLATES: TemplateDefinition[] = [
     {
         templateId: "tpl-high-cpu-pod",
         name: "High CPU Usage Pod Recovery",
+        // As above: cpu_spike is the type the detector emits. Threshold is
+        // >= 90 to match the detector's own cpu_spike pattern (minValue 90),
+        // which fires at exactly 90.
         match: (inc) =>
-            inc.incidentType === "resource_pressure" &&
+            (inc.incidentType === "resource_pressure" || inc.incidentType === "cpu_spike") &&
             inc.metric === "cpu" &&
-            (inc.metricValue !== undefined && inc.metricValue > 90),
+            inc.metricValue !== undefined &&
+            inc.metricValue >= 90,
         buildSteps: (inc) => {
             const currentReplicas = 3;
             return [
@@ -112,7 +145,7 @@ const TEMPLATES: TemplateDefinition[] = [
                     estimatedDurationSec: 10,
                 },
                 {
-                    action: "scale up",
+                    action: "scale_deployment",
                     command: `kubectl scale deployment/${inc.deploymentName || inc.affectedService} --replicas=${currentReplicas + 2} -n ${inc.namespace || "default"}`,
                     description: "Scale up deployment to handle CPU load",
                     estimatedDurationSec: 30,
@@ -139,7 +172,7 @@ const TEMPLATES: TemplateDefinition[] = [
                 estimatedDurationSec: 10,
             },
             {
-                action: "rollback",
+                action: "rollback_deployment",
                 command: `kubectl rollout undo deployment/${inc.deploymentName || inc.affectedService} -n ${inc.namespace || "default"}`,
                 description: "Rollback to the previous working image",
                 estimatedDurationSec: 60,
@@ -170,7 +203,7 @@ const TEMPLATES: TemplateDefinition[] = [
                 estimatedDurationSec: 10,
             },
             {
-                action: "restart deployment",
+                action: "rolling_restart",
                 command: `kubectl rollout restart deployment/${inc.deploymentName || inc.affectedService} -n ${inc.namespace || "default"}`,
                 description: "Restart deployment to register new endpoints",
                 estimatedDurationSec: 60,
