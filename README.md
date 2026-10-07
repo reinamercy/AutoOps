@@ -1,6 +1,6 @@
-# 🤖 AutoOps AI — Autonomous Multi-Agent DevOps AI System
+# 🤖 AutoOps AI — Multi-Agent, Risk-Gated Incident Remediation
 
-> **Intelligent Incident Detection & Resolution — a hand-rolled, LangGraph-*inspired* multi-agent workflow**
+> **Incident detection, diagnosis, remediation planning and risk-gated execution — a hand-rolled, LangGraph-*inspired* multi-agent workflow**
 
 ![System Architecture](docs/diagrams/system_architecture.png?v=2)
 
@@ -8,26 +8,26 @@
 
 ## 🚀 Overview
 
-AutoOps AI is an autonomous DevOps system that leverages a multi-agent AI architecture to automatically monitor infrastructure, detect anomalies, identify root causes, generate remediation plans, and execute self-healing actions — with human approval gating for high-risk actions.
+AutoOps AI is a closed-loop incident-response pipeline. It detects anomalies in infrastructure events, identifies a likely root cause, generates a remediation plan, scores the plan's risk, and then either executes it, executes and notifies, or suspends it for human approval. Commands matching hard-blocked patterns are always refused. Execution is real for 4 of 10 remediation actions when a Kubernetes cluster is configured; the other 6 are always simulated.
 
-Each agent operates as an independent step in a stateful, hand-rolled TypeScript orchestrator (`src/orchestrator/workflow.ts`) — architecturally similar to LangGraph's StateGraph pattern, but with **no LangGraph dependency**. See [TECH_README.md](TECH_README.md) for the real architecture.
+Each agent is one step in a stateful, hand-rolled TypeScript orchestrator (`src/orchestrator/workflow.ts`). It is architecturally similar to LangGraph's StateGraph pattern but has **no LangGraph dependency**. See [TECH_README.md](TECH_README.md) for the code-accurate architecture, and [Paper Reproducibility](#-paper-reproducibility) for what has and has not been evaluated.
 
 ---
 
 ## 🏗️ Architecture
 
-> See [TECH_README.md](TECH_README.md) for the exhaustive, code-accurate breakdown of
-> what's real vs. simulated — this table is the marketing-level summary.
+> See [TECH_README.md](TECH_README.md) for the exhaustive breakdown of what is real and what is simulated.
 
 | Layer | Components | Status |
 |---|---|---|
 | **Data Ingestion** | Kafka (real via `kafkajs`, in-process `EventEmitter` fallback), Go log ingester | ✅ Real, with fallback |
 | **Agent Processing** | Hand-rolled TypeScript StateGraph (LangGraph-*inspired*, not LangGraph itself), 6 specialized agents | ✅ Real |
-| **AI/ML** | Groq LLM (`llama-3.3-70b-versatile`) for planning; rule/statistics-based anomaly detection and RCA | ✅ Real |
+| **AI/ML** | Groq LLM (`openai/gpt-oss-120b`) for planning; rule/statistics-based anomaly detection and RCA | ✅ Real |
 | **Storage** | PostgreSQL (real via `pg`), Redis (real via `ioredis`), ChromaDB (real, Sentence-Transformer embeddings) — each with an automatic in-process fallback if unreachable | ✅ Real, with fallback |
-| **Execution** | Kubernetes API for 4 of 10 remediation actions (`restart_service`, `scale_deployment`, `update_resource_limits`, `verify_health`) when `EXECUTION_MODE=shadow`/`live` and a cluster is configured; simulated otherwise | ⚠️ Partial |
-| **Observability** | Prometheus-format metrics endpoint, WebSocket live feed, custom dashboard | ✅ Real |
-| **Security** | Command validator (regex hard-blocks), API key on approval endpoints, rate limiting | ✅ Real — no JWT/RBAC/OAuth |
+| **Retrieval** | Similar past incidents retrieved from the vector store and added to the LLM prompt | ⚠️ Implemented, not experimentally validated (ablation not run) |
+| **Execution** | Kubernetes API for 4 of 10 remediation actions (`restart_service`, `scale_deployment`, `update_resource_limits`, `verify_health`) when `EXECUTION_MODE=shadow`/`live` and a cluster is configured; simulated otherwise. The other 6 actions are always simulated | ⚠️ Partial |
+| **Observability** | Prometheus-format metrics endpoint, WebSocket live feed, dashboard | ✅ Real |
+| **Security** | Command validator (regex hard-blocks), optional API key on approval endpoints (`AUTOOPS_API_KEY`), rate limiting on `/api/simulate` and approval endpoints | ✅ Real — no JWT/RBAC/OAuth/TLS; `/api/debug/*` endpoints are unauthenticated |
 
 ---
 
@@ -50,24 +50,26 @@ Each agent operates as an independent step in a stateful, hand-rolled TypeScript
 
 | # | Agent | Role | Key Technology |
 |---|---|---|---|
-| 1 | **Monitoring Agent** | Anomaly detection from logs, metrics, alerts | Isolation Forest, Time-series ML |
-| 2 | **Root Cause Analysis Agent** | Dependency graph reasoning & failure isolation | Rule engine, Graph traversal |
-| 3 | **Planning Agent** | LLM-driven remediation plan generation | GPT/LLaMA + RAG |
-| 4 | **SLA Agent** | Priority scoring & SLA breach prevention | Dynamic scheduling |
-| 5 | **Execution Agent** | Automated fix execution | Docker/K8s API, Shell |
-| 6 | **Feedback Agent** | Continuous learning & knowledge base updates | Vector DB, ML retraining |
+| 1 | **Monitoring Agent** | Anomaly detection from events | Weighted ensemble: Z-score-style statistics, known failure-signature patterns, rules |
+| 2 | **Root Cause Analysis Agent** | Root-cause matching & impact tracing | Rule matching, hardcoded service-dependency graph |
+| 3 | **Planning Agent** | Remediation plan generation | Template → memory (cache / vector similarity) → Groq LLM with retrieved context → hardcoded fallback |
+| 4 | **SLA Agent** | Priority scoring | Weighted score → P0–P4, SLA deadline by tier |
+| 5 | **Execution Agent** | Runs plan steps | Kubernetes client for 4 of 10 actions when configured; simulated output otherwise |
+| 6 | **Feedback Agent** | Records outcomes | Persists to Postgres + vector store; exponential score update for reused fixes (no model retraining) |
+
+Between the SLA and Execution agents, the **Decision Engine** validates commands, computes a heuristic (uncalibrated) risk score, and routes to `auto` / `notify` / `approve` / `block`. `approve` and `block` both wait for a human decision; hard-blocked command patterns are refused regardless of approval.
 
 ---
 
 ## ⚡ Key Features
 
-- 🔄 **Autonomous Decision Making** — Zero-touch incident resolution
-- 🛡️ **Self-Healing Infrastructure** — Auto-restart, auto-scale, auto-rollback
-- ⏱️ **Real-Time Detection** — Sub-second anomaly identification
-- 🧠 **AI-Driven Remediation** — LLM-generated step-by-step fix plans
-- 📈 **Continuous Learning** — Improves accuracy with every incident
-- 🔧 **Scalable Architecture** — Handles 1000+ events/sec via Kafka
-- 🔐 **Enterprise Security** — JWT, RBAC, encrypted communications
+- 🔄 **Risk-gated decision routing**: low-risk plans execute automatically; higher-risk plans notify or wait for human approval. This is a heuristic score, not a calibrated risk estimate.
+- 🛡️ **Remediation actions**: restart, scale, resource-limit patch and health check run against Kubernetes when configured. Rollback, disk cleanup, connection-pool flush, config apply, pipeline trigger and rolling restart are simulated.
+- ⏱️ **Event-driven detection**: rule- and statistics-based anomaly detection on ingested events. Latency has not been benchmarked.
+- 🧠 **LLM-generated remediation plans**: step-by-step plans from `openai/gpt-oss-120b`, used only when no template or stored fix matches.
+- 📈 **Fix memory**: successful fixes are stored and reused, and their scores are updated from outcomes. Reuse does not check correctness; the paper shows incorrect fixes being cached and replicated.
+- 🔧 **Streaming ingestion**: real Kafka (KRaft) consumer and a Go producer. Throughput has not been benchmarked.
+- 🔐 **Command safety**: regex hard-blocks (for example namespace deletion, unscoped destructive SQL, pipe-to-shell), an optional API key on approval endpoints, and rate limiting.
 
 ---
 
@@ -77,7 +79,7 @@ Each agent operates as an independent step in a stateful, hand-rolled TypeScript
 ┌─────────────────────────────────────────────────────┐
 │  Framework    │  Hand-rolled state machine (Fastify) │
 │  Backend      │  TypeScript / Node.js                │
-│  AI/ML        │  Groq (llama-3.3-70b-versatile)      │
+│  AI/ML        │  Groq (openai/gpt-oss-120b)          │
 │  Vector DB    │  ChromaDB, real — TF-IDF fallback     │
 │  Database     │  PostgreSQL 15 + Redis 7, real —      │
 │                  in-memory/in-process fallback        │
@@ -87,9 +89,10 @@ Each agent operates as an independent step in a stateful, hand-rolled TypeScript
 │  Execution    │  Kubernetes API — 4/10 actions, real  │
 │                  when EXECUTION_MODE=shadow/live      │
 │  Monitoring   │  Prometheus-format endpoint, WebSocket│
-│  Frontend     │  Static dashboard (public/)           │
-│  Security     │  Command validator, API key, rate     │
-│                  limiting — no JWT/RBAC/OAuth         │
+│  Frontend     │  Static dashboard (public/), Next.js  │
+│                  dashboard (dashboard/)               │
+│  Security     │  Command validator, optional API key, │
+│                  rate limiting — no JWT/RBAC/OAuth    │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -103,48 +106,26 @@ split per component.
 ## 📁 Project Structure
 
 ```
-autoops_ai/
-├── docs/                          # Documentation & Diagrams
-│   ├── SYSTEM_DESIGN.md
-│   ├── ARCHITECTURE_DIAGRAMS.md
-│   ├── AGENT_SPECIFICATIONS.md
-│   ├── SCALABILITY_DESIGN.md
-│   ├── EXECUTION_FLOW.md
-│   ├── TECH_STACK.md
-│   ├── PRESENTATION.md
-│   ├── API_REFERENCE.md
-│   ├── DEPLOYMENT.md
-│   └── diagrams/
-├── src/                           # Source Code
-│   ├── agents/                    # Agent Implementations
-│   │   ├── monitoring.agent.ts
-│   │   ├── rca.agent.ts
-│   │   ├── planning.agent.ts
-│   │   ├── sla.agent.ts
-│   │   ├── execution.agent.ts
-│   │   └── feedback.agent.ts
-│   ├── orchestrator/              # Workflow Orchestration
-│   │   ├── state.ts
-│   │   └── workflow.ts
-│   ├── services/                  # Core Services
-│   │   ├── groq.client.ts
-│   │   ├── chroma.client.ts
-│   │   ├── kafka.service.ts
-│   │   └── database.ts
-│   ├── api/                       # API Endpoints
-│   │   ├── server.ts
-│   │   └── routes.ts
-│   ├── simulator/                 # Log Simulator
-│   │   └── log-producer.ts
-│   ├── config/
-│   │   └── index.ts
-│   ├── utils/
-│   │   └── logger.ts
+AutoOps/
+├── docs/                          # Documentation & diagrams
+├── src/
+│   ├── agents/                    # monitoring, rca, planning, sla, execution, feedback
+│   ├── orchestrator/              # state.ts, workflow.ts
+│   ├── engines/                   # decision.engine.ts (risk routing)
+│   ├── services/                  # groq, chroma, kafka, redis, k8s, database, risk,
+│   │                              # memory, template, command-validator, approvals
+│   ├── evaluation/                # rubric (plan-scoring.ts), work order, result loader
+│   ├── api/                       # server.ts, approvals.router.ts
+│   ├── db/migrations/             # Postgres schema
+│   ├── simulator/                 # log-producer.ts (synthetic events)
+│   ├── config/  utils/
 │   └── index.ts
-├── go-ingester/                 # Go Log Ingester — publishes real events to Kafka
-├── infrastructure/                # Infrastructure as Code
-│   ├── docker/
-│   └── kubernetes/
+├── scripts/                       # evaluation harness, analysis scripts, result files
+├── simulation/                    # Docker-based demo scenarios
+├── go-ingester/                   # Go log ingester — publishes real events to Kafka
+├── dashboard/                     # Next.js dashboard
+├── public/                        # Static dashboard
+├── paper/                         # Manuscript source, PDF and figures
 ├── docker-compose.yml
 ├── Dockerfile
 ├── package.json
@@ -159,14 +140,14 @@ autoops_ai/
 
 ```bash
 # Clone the repository
-git clone https://github.com/adithya11sci/autoops_ai.git
-cd autoops_ai
+git clone https://github.com/reinamercy/AutoOps.git
+cd AutoOps
 
 # Set up environment
 cp .env.example .env
 # Edit .env with your Groq API key
 
-# Start infrastructure (Kafka, PostgreSQL, ChromaDB)
+# Start infrastructure (Kafka, PostgreSQL, ChromaDB, Redis)
 docker-compose up -d
 
 # Install dependencies
@@ -181,16 +162,18 @@ npm run simulate
 
 ---
 
-## 📊 Performance Targets
+## 📊 Design Targets (not measured)
 
-| Metric | Target |
-|---|---|
-| Log ingestion rate | 1,000+ events/sec |
-| Anomaly detection latency | < 500ms |
-| End-to-end resolution time | < 5 minutes |
-| System availability | 99.9% |
-| False positive rate | < 5% |
-| Auto-resolution success rate | > 85% |
+These are engineering goals, not results. None has been benchmarked; the only measured results are those in the paper (see [Paper Reproducibility](#-paper-reproducibility)).
+
+| Metric | Target | Status |
+|---|---|---|
+| Log ingestion rate | 1,000+ events/sec | Not benchmarked |
+| Anomaly detection latency | < 500ms | Not benchmarked |
+| End-to-end resolution time | < 5 minutes | Not benchmarked. Measured planning latency is in the paper; it excludes human approval time |
+| System availability | 99.9% | Not measured (no production deployment) |
+| False positive rate | < 5% | Not measured |
+| Auto-resolution success rate | > 85% | Not measurable yet: 6 of 10 actions are simulated and simulated success is independent of plan content |
 
 ---
 

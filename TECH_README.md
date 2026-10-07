@@ -124,7 +124,7 @@ Threshold: `ANOMALY_THRESHOLD=0.7` — below this, events are silently dropped.
 
 3. Groq LLM (only when 1 and 2 both miss)
      → RAG: query vector store for similar incidents → inject as context
-     → Call llama-3.3-70b-versatile with structured JSON output
+     → Call the configured Groq model (openai/gpt-oss-120b in the paper) with structured JSON output
      → Circuit breaker: 3 failures → 5-min bypass → auto-closes
      → On GroqUnavailableError: fall through to step 4
 
