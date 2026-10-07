@@ -21,7 +21,7 @@ const log = createChildLogger("PlanningAgent");
 const templateService = new TemplateService();
 const memoryService = new MemoryService();
 
-const SYSTEM_PROMPT = `You are an expert DevOps Site Reliability Engineer (SRE). Your job is to generate a structured remediation plan to resolve infrastructure incidents.
+export const SYSTEM_PROMPT = `You are an expert DevOps Site Reliability Engineer (SRE). Your job is to generate a structured remediation plan to resolve infrastructure incidents.
 
 You MUST respond with valid JSON in exactly this format:
 {
