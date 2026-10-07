@@ -213,5 +213,5 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 ---
 
 <p align="center">
-  <b>AutoOps AI</b> — Where AI meets DevOps for truly autonomous infrastructure management.
+  <b>AutoOps AI</b> — Multi-agent, risk-gated infrastructure remediation.
 </p>
